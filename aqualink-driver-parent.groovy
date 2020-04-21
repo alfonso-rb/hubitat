@@ -2,18 +2,16 @@ metadata {
     definition (name: "Pool Aqualink Parent", namespace: "aqualink", author: "MC") {
         capability "Initialize"
         capability "Switch"
-<<<<<<< HEAD
-=======
 // Added the following capabilities
 //        capability "TemperatureMeasurement"
 //        capability "Sensor"
->>>>>>> 645c8e2149d0a9823c5f7bd1b480fefa18a84ce2
 
         attribute "contact", "string"
         attribute "session_id", "string"
         attribute "auth_token", "string"
         attribute "user_id", "string"
         
+        attribute "driverVersion", "string"        
         attribute "label", "string"
         attribute "poolStatus", "string"
         attribute "spaTemp", "string"
@@ -240,6 +238,7 @@ void updatedeviceinfo(){
 void refreshstateinfo(){
     devices = GetHomeScreenInfo()
     
+    state.configval16   = "v0.1.4 driver for iAquaLink 2.0 (Hubitat)"
     state.configval0    = devices.home_screen[0].status
     state.configval4    = devices.home_screen[4].spa_temp
     state.configval5    = devices.home_screen[5].pool_temp    
@@ -252,6 +251,7 @@ void refreshstateinfo(){
     state.configval13   = devices.home_screen[13].spa_heater
     state.configval15   = devices.home_screen[15].solar_heater
 
+    sendEvent(name: "driverVersion", value: state.configval16, descriptionText: "Driver Version: ${state.configval16}")
     sendEvent(name: "status", value: state.configval0, descriptionText: "Aqualink State: ${state.configval0}")
     sendEvent(name: "poolPump", value: state.configval12=="0" ? 'Off' : 'On', descriptionText: "Pool pump: ${state.configval12}")
     sendEvent(name: "spaTemp", value: state.configval4, descriptionText: "Spa Temperature: ${state.configval4}")
@@ -260,8 +260,27 @@ void refreshstateinfo(){
     sendEvent(name: "spaSetTemp", value: state.configval7, descriptionText: "Spa Set Temperature: ${state.configval7}")
     sendEvent(name: "poolSetTemp", value: state.configval8, descriptionText: "Pool Set Temperature: ${state.configval8}")
     sendEvent(name: "spaMode", value: state.configval11=="0" ? 'Off' : 'On', descriptionText: "Spa Mode: ${state.configval11}")
-    sendEvent(name: "gasHeater", value: state.configval13=="0" ? 'Off' : 'On', descriptionText: "Gas Heating: ${state.configval13}")
-    sendEvent(name: "solarHeater", value: state.configval15=="0" ? 'Off' : 'On', descriptionText: "Solar Heating: ${state.configval15}")
+//    sendEvent(name: "gasHeater", value: state.configval13=="0" ? 'Off' : 'On', descriptionText: "Gas Heating: ${state.configval13}")
+    sendEvent(name: "freezeProtection", value: state.configval10=="0" ? 'Off' : 'On', descriptionText: "Freeze Protection: ${state.configval10}")
+//    sendEvent(name: "solarHeater", value: state.configval15=="0" ? 'Off' : 'On', descriptionText: "Solar Heating: ${state.configval15}")
+
+// Event for solarheater setting (3 states)
+    if (state.configval15=='0') {
+        sendEvent(name: "solarHeater", value: 'Off', descriptionText: "Solar Heating: Off")
+    } else if (state.configval15=='1') {
+        sendEvent(name: "solarHeater", value: 'On - Heating', descriptionText: "Solar Heating: On - Heating")
+    } else if (state.configval15=='3') {
+        sendEvent(name: "solarHeater", value: 'On', descriptionText: "Solar Heating: On")
+    }
+
+// Event for gas heater setting (3 states)
+    if (state.configval13=='0') {
+        sendEvent(name: "gasHeater", value: 'Off', descriptionText: "Gas Heating: Off")
+    } else if (state.configval13=='1') {
+        sendEvent(name: "gasHeater", value: 'ON - HEATING', descriptionText: "Gas Heating: ON - HEATING")
+    } else if (state.configval13=='3') {
+        sendEvent(name: "gasHeater", value: 'ON', descriptionText: "Gas Heating: ON")
+    }
 
 }
 
@@ -311,73 +330,24 @@ void rundeviceupdate(){
 }
 
 void on(){
-/*
-    unit=device.deviceNetworkId.substring(device.deviceNetworkId.indexOf("-")+1)
-    //log.info "${unit}"
-    parent.rundeviceupdate()
-    //log.info "  ${device.currentValue('switch')} "
-    //log.info "  ${device.currentValue('subtype')}"
-    devtype = device.currentValue('devtype')
-    
-    if(device.currentValue('switch') == 'off'){
-        if (logEnable) log.info "Toggle Device ON  ${device}"
-        if(unit == "FilterPump"){
-            parent.TogglePoolPump()  
-        } else if(devtype == "2"){
-            parent.OperateColorLightParent(unit,settings.lightcolor)
-        } else {
-            parent.OperateDeviceParent(unit)
-        }
-        sendEvent(name: "switch", value: "on")        
-    } else {
-        if (logEnable) log.info "Device Already ON  ${device}"
-    }
-*/
-<<<<<<< HEAD
-
-    refreshstateinfo()
-//    log.info state.configval12
+//    refreshstateinfo()
     
     if (state.configval12=='1') {
         log.info "Pool pump already ON."
     } else {
-        if (logEnable) log.info "Turning on Pool pump..."
-    }    
-=======
-    parent.rundeviceupdate()
-    
->>>>>>> 645c8e2149d0a9823c5f7bd1b480fefa18a84ce2
-
+        if (logEnable) log.info "Turning on pool pump..."
+        TogglePoolPump()
+    }   
 }
 
 void off(){
-/*
-    unit=device.deviceNetworkId.substring(device.deviceNetworkId.indexOf("-")+1)
-    parent.rundeviceupdate()
-    log.info "${unit}    ${device.currentValue('switch')} "
-    devtype = device.currentValue('devtype')
-    
-    if(device.currentValue('switch') == 'on'){
-        if (logEnable) log.info "Toggle Device OFF  ${device}"
-        if(unit == "FilterPump"){
-            parent.TogglePoolPump()  
-        } else if(devtype == "2"){
-            parent.OperateColorLightParent(unit,"0")
-        } else {
-            parent.OperateDeviceParent(unit)
-        }
-        sendEvent(name: "switch", value: "off")        
-    } else {
-        if (logEnable) log.info "Device Already OFF  ${device}"
-    }
-*/
-    refreshstateinfo()
-//    log.info state.configval12
+//    refreshstateinfo()
     
     if (state.configval12=='0') {
         log.info "Pool pump already OFF."
     } else {
-        if (logEnable) log.info "Turning off Pool pump..."
+        if (logEnable) log.info "Turning off pool pump..."
+        TogglePoolPump()
     }
 }
 
@@ -490,7 +460,13 @@ def ToggleSpaPump() {
     if(!session_id) {
         LoginGetSession()
     }
-    
+
+    if (state.configval11=='0') {
+        log.info "Turning on spa mode..."
+    } else {
+        log.info "Turning off spa mode..."
+    }  
+
     OperateSpaPump();
     refreshstateinfo()
 
@@ -525,10 +501,16 @@ def ToggleSolarHeat() {
     if(!session_id) {
         LoginGetSession()
     }
-    
+
+    if (state.configval15=='0') {
+        log.info "Turning on solar heating..."
+    } else {
+        log.info "Turning off solar heating..."
+    }
+
     OperateSolarHeat();
-    refreshstateinfo()
-   
+    refreshstateinfo()    
+
 }
 
 def OperateSolarHeat() {
@@ -562,6 +544,12 @@ def ToggleGasHeat() {
         LoginGetSession()
     }
     
+    if (state.configval13=='0') {
+        log.info "Turning on gas heating. WARNING: CAN USE SIGNIFICANT GAS IF HEATING THE ENTIRE POOL. SHOULD BE IN SPA MODE!"
+    } else {
+        log.info "Turning off gas heating..."
+    }
+
     OperateGasHeat();
     refreshstateinfo()
   
