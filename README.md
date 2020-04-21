@@ -1,14 +1,20 @@
-# Hubitat iAquaLink driver - customized
+# Hubitat Drivers
+> Different drivers I will work on for the Hubitat Smart Home Controller (love this thing!!!)
 
-If you only need to control one device you can use "aqualink-driver" in the OLD section,  if you want to control more devices, color lights and get temperature data install all drivers in the ParentChild folder.
+So far all I have is the iAqualink Driver. The original is from https://github.com/mikec85/hubitatdrivers (Thanks Mike!)
 
-## Completed so far
+## Release History
 
-- Pool pump on and off
-- Toggle Solar Heating On/Off
-- Toggle Spa Mode On/Off
-- Identify if Solar Heater is On Heating vs. On vs. Off
-- Freeze Protection State
-- Toggle Gas Heating On/Off
-- Identify if Gas Heater is On Heating vs. On vs. Off
-- Air blower (child device) is working
+## Meta
+
+- Alfonso Brown
+– [@AlfieRB](https://twitter.com/AlfieRB)
+– alfonsobATacbssDOTcom
+
+## Contributing
+
+1. Fork it (<https://github.com/yourname/yourproject/fork>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
