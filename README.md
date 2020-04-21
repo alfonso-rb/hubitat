@@ -8,8 +8,8 @@ So far all I have is the iAqualink Driver. The original is from https://github.c
 ## Meta
 
 - Alfonso Brown
-– [@AlfieRB](https://twitter.com/AlfieRB)
-– alfonsobATacbssDOTcom
+- [@AlfieRB](https://twitter.com/AlfieRB)
+- Email: alfonsobATacbssDOTcom
 
 ## Contributing
 
