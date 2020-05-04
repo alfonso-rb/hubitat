@@ -27,7 +27,7 @@ I am not experienced in Groovy coding at all so I fumbled through a lot of this.
 
 - Add my hardware info to this README so if you want to try it you can compare
   - Jandy Model #
-  - iAwualink Model #
+  - iAqualink Model #
   - Pool pump is a single speed DC pump, so I can't test if this works with variable speed pump.
   - Child devices I have are
     - Pool light (not attached, I'm using an Inovelli smart dimmer instead)
